@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,16 +15,17 @@ public class Server {
     }
 
     private void execute() throws IOException {
-        ServerSocket server = new ServerSocket(port);
-        WriteServer write = new WriteServer();
-        write.start();
-        System.out.println("Server is listening...");
-        while (true) {
-            Socket socket = server.accept();
-            System.out.println("Connected " + socket);
-            Server.listSK.add(socket);
-            ReadServer read = new ReadServer(socket);
-            read.start();
+        try (ServerSocket server = new ServerSocket(port)) {
+            WriteServer write = new WriteServer();
+            write.start();
+            System.out.println("Server is listening...");
+            while (true) {
+                Socket socket = server.accept();
+                System.out.println("Connected " + socket);
+                Server.listSK.add(socket);
+                ReadServer read = new ReadServer(socket);
+                read.start();
+            }
         }
     }
 
@@ -78,7 +78,7 @@ class WriteServer extends Thread {
 
     @Override
     public void run() {
-        DataOutputStream dos = null;
+        DataOutputStream dos;
         Scanner sc = new Scanner(System.in);
         while (true) {
             String sms = sc.nextLine();	//Đang đợi Server nhập dữ liệu
@@ -96,7 +96,8 @@ class WriteServer extends Thread {
 
 }
 
-/*import javax.swing.*;
+/*
+import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
