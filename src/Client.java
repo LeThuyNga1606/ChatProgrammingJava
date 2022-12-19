@@ -1,98 +1,3 @@
-/*
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.Scanner;
-import GUI.user.chat;
-public class Client {
-    private InetAddress host;
-    private int port;
-
-    public Client(InetAddress host, int port) {
-        this.host = host;
-        this.port = port;
-    }
-
-    private void execute() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = sc.nextLine();
-
-        Socket client = new Socket(host, port);
-        ReadClient read = new ReadClient(client);
-        read.start();
-        WriteClient write = new WriteClient(client, name);
-        write.start();
-    }
-
-    public static void main(String[] args) throws IOException {
-        Client client = new Client(InetAddress.getLocalHost(), 15797);
-        client.execute();
-    }
-}
-
-class ReadClient extends Thread{
-    private Socket client;
-
-    public ReadClient(Socket client) {
-        this.client = client;
-    }
-
-    @Override
-    public void run() {
-        DataInputStream dis = null;
-        try {
-            dis = new DataInputStream(client.getInputStream());
-            while(true) {
-                String sms = dis.readUTF();
-                System.out.println(sms);
-            }
-        } catch (Exception e) {
-            try {
-                dis.close();
-                client.close();
-            } catch (IOException ex) {
-                System.out.println("disconnect from server");
-            }
-        }
-    }
-}
-
-class WriteClient extends Thread{
-    private Socket client;
-    private String name;
-
-    public WriteClient(Socket client, String name) {
-        this.client = client;
-        this.name = name;
-    }
-
-    @Override
-    public void run() {
-        DataOutputStream dos = null;
-        Scanner sc = null;
-        try {
-            dos = new DataOutputStream(client.getOutputStream());
-            sc = new Scanner(System.in);
-            while(true) {
-                String sms = sc.nextLine();
-                //String sms = chat.returnMess();
-
-                dos.writeUTF(name + ": " + sms);
-            }
-        } catch (Exception e) {
-            try {
-                dos.close();
-                client.close();
-            } catch (IOException ex) {
-                System.out.println("disconnect from server");
-            }
-        }
-    }
-}*/
-
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -102,7 +7,7 @@ import java.text.*;
 import java.net.*;
 import java.io.*;
 
-public class Client implements ActionListener {
+public class Client extends JFrame implements ActionListener {
 
     JTextField text;
     static JPanel a1;
@@ -112,60 +17,19 @@ public class Client implements ActionListener {
 
     static DataOutputStream dout;
 
-    Client() {
+    public Client() {
 
         f.setLayout(null);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.setSize(500, 500);
 
         JPanel p1 = new JPanel();
         p1.setBackground(new Color(7, 94, 84));
         p1.setBounds(0, 0, 450, 70);
         p1.setLayout(null);
         f.add(p1);
-        f.setVisible(true);
-
-//        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/3.png"));
-//        Image i2 = i1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT);
-//        ImageIcon i3 = new ImageIcon(i2);
-//        JLabel back = new JLabel(i3);
-//        back.setBounds(5, 20, 25, 25);
-//        p1.add(back);
-
-//        back.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent ae) {
-//                System.exit(0);
-//            }
-//        });
-
-//        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/2.png"));
-//        Image i5 = i4.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-//        ImageIcon i6 = new ImageIcon(i5);
-//        JLabel profile = new JLabel(i6);
-//        profile.setBounds(40, 10, 50, 50);
-//        p1.add(profile);
-//
-//        ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("icons/video.png"));
-//        Image i8 = i7.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
-//        ImageIcon i9 = new ImageIcon(i8);
-//        JLabel video = new JLabel(i9);
-//        video.setBounds(300, 20, 30, 30);
-//        p1.add(video);
-//
-//        ImageIcon i10 = new ImageIcon(ClassLoader.getSystemResource("icons/phone.png"));
-//        Image i11 = i10.getImage().getScaledInstance(35, 30, Image.SCALE_DEFAULT);
-//        ImageIcon i12 = new ImageIcon(i11);
-//        JLabel phone = new JLabel(i12);
-//        phone.setBounds(360, 20, 35, 30);
-//        p1.add(phone);
-//
-//        ImageIcon i13 = new ImageIcon(ClassLoader.getSystemResource("icons/3icon.png"));
-//        Image i14 = i13.getImage().getScaledInstance(10, 25, Image.SCALE_DEFAULT);
-//        ImageIcon i15 = new ImageIcon(i14);
-//        JLabel morevert = new JLabel(i15);
-//        morevert.setBounds(420, 20, 10, 25);
-//        p1.add(morevert);
-
-        JLabel name = new JLabel("Bunty");
+        
+        JLabel name = new JLabel("NGA");
         name.setBounds(110, 15, 100, 18);
         name.setForeground(Color.WHITE);
         name.setFont(new Font("SAN_SERIF", Font.BOLD, 18));
@@ -196,10 +60,10 @@ public class Client implements ActionListener {
 
         f.setSize(450, 735);
         f.setLocation(800, 50);
-        f.setUndecorated(true);
+        //f.setUndecorated(true);
         f.getContentPane().setBackground(Color.WHITE);
 
-        f.pack();
+        //f.pack();
         f.setVisible(true);
     }
 
@@ -255,7 +119,6 @@ public class Client implements ActionListener {
 
     public static void main(String[] args) {
         new Client();
-
         try {
             Socket s = new Socket("127.0.0.1", 15797);
             DataInputStream din = new DataInputStream(s.getInputStream());
