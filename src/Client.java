@@ -1,21 +1,21 @@
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.text.*;
-import java.net.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Client extends JFrame implements ActionListener {
 
-    JTextField text;
     static JPanel a1;
     static Box vertical = Box.createVerticalBox();
-
     static JFrame f = new JFrame();
-
     static DataOutputStream dout;
+    JTextField text;
 
     public Client() {
 
@@ -28,7 +28,7 @@ public class Client extends JFrame implements ActionListener {
         p1.setBounds(0, 0, 450, 70);
         p1.setLayout(null);
         f.add(p1);
-        
+
         JLabel name = new JLabel("NGA");
         name.setBounds(110, 15, 100, 18);
         name.setForeground(Color.WHITE);
@@ -67,33 +67,6 @@ public class Client extends JFrame implements ActionListener {
         f.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent ae) {
-        try {
-            String out = text.getText();
-
-            JPanel p2 = formatLabel(out);
-
-            a1.setLayout(new BorderLayout());
-
-            JPanel right = new JPanel(new BorderLayout());
-            right.add(p2, BorderLayout.LINE_END);
-            vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
-
-            a1.add(vertical, BorderLayout.PAGE_START);
-
-            dout.writeUTF(out);
-
-            text.setText("");
-
-            f.repaint();
-            f.invalidate();
-            f.validate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static JPanel formatLabel(String out) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -120,11 +93,14 @@ public class Client extends JFrame implements ActionListener {
     public static void main(String[] args) {
         new Client();
         try {
-            Socket s = new Socket("127.0.0.1", 15797);
-            DataInputStream din = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
+            DataInputStream din;
+            try (Socket s = new Socket("127.0.0.1", 15797)) {
+                din = new DataInputStream(s.getInputStream());
+                dout = new DataOutputStream(s.getOutputStream());
+            }
 
-            while(true) {
+            //noinspection InfiniteLoopStatement
+            while (true) {
                 a1.setLayout(new BorderLayout());
                 String msg = din.readUTF();
                 JPanel panel = formatLabel(msg);
@@ -138,6 +114,33 @@ public class Client extends JFrame implements ActionListener {
 
                 f.validate();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        try {
+            String out = text.getText();
+
+            JPanel p2 = formatLabel(out);
+
+            a1.setLayout(new BorderLayout());
+
+            JPanel right = new JPanel(new BorderLayout());
+            right.add(p2, BorderLayout.LINE_END);
+            vertical.add(right);
+            vertical.add(Box.createVerticalStrut(15));
+
+            a1.add(vertical, BorderLayout.PAGE_START);
+
+            dout.writeUTF(out);
+
+            text.setText("");
+
+            f.repaint();
+            f.invalidate();
+            f.validate();
         } catch (Exception e) {
             e.printStackTrace();
         }
