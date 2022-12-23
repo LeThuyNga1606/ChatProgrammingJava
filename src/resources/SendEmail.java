@@ -1,61 +1,47 @@
-package resources;// Java program to send email
+package resources;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+public class SendEmail {
+    public static void main(String[] args) {
+        // Set up the mail server properties
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
 
-public class SendEmail
-{
+        // Set up the username and password for authenticating the account
+        String username = "pqtuan19@clc.fitus.edu.vn";
+        String password = "Tommy@142@";
 
-    public static void main(String [] args)
-    {
-        // email ID of Recipient.
-        String recipient = "recipient@gmail.com";
+        // Create a session with the mail server properties
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
 
-        // email ID of Sender.
-        String sender = "sender@gmail.com";
+        try {
+            // Create a new email message
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("pqtuan19@clc.fitus.edu.vn"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse("pqt0142@gmail.com"));
+            message.setSubject("Test Email from Java Program");
+            message.setText("This is a test email sent from a Java program.");
 
-        // using host as localhost
-        String host = "smtp.gmail.com";
-
-        // Getting system properties
-        Properties properties = System.getProperties();
-
-        // Setting up mail server
-        properties.setProperty("mail.smtp.host", host);
-
-        // creating session object to get properties
-        Session session = Session.getDefaultInstance(properties);
-
-        try
-        {
-            // MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
-
-            // Set From Field: adding senders email to from field.
-            message.setFrom(new InternetAddress(sender));
-
-            // Set To Field: adding recipient's email to from field.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
-            // Set Subject: subject of the email
-            message.setSubject("This is Subject");
-
-            // set body of the email.
-            message.setText("This is a test mail");
-
-            // Send email.
+            // Send the email
             Transport.send(message);
-            System.out.println("Mail successfully sent");
-        }
-        catch (MessagingException mex)
-        {
-            mex.printStackTrace();
+
+            System.out.println("Email sent successfully!");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 }
