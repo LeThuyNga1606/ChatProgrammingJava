@@ -1,11 +1,5 @@
 package resources.SignIn;
 
-import com.mysql.cj.Session;
-import resources.SignUp;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,8 +70,8 @@ public class SignIn extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                SignUp res= new SignUp();
-                res.show();
+//                SignUp res= new SignUp();
+//                res.show();
             }
         });
 
@@ -167,23 +161,23 @@ public class SignIn extends JFrame{
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true"); //TLS
 
-        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, passwordEmail);
-            }
-        });
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(fromEmail));
-            message.setSubject("Reset password");
-            message.setText("Your new password is: "+ resetPass);
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailToSend));
+//        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(fromEmail, passwordEmail);
+//            }
+//        });
+//        try {
+//            MimeMessage message = new MimeMessage(session);
+//            message.setFrom(new InternetAddress(fromEmail));
+//            message.setSubject("Reset password");
+//            message.setText("Your new password is: "+ resetPass);
+//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailToSend));
 
-            Transport.send(message);;
-        } catch (MessagingException ex2) {
-            ex2.printStackTrace();
-        }
+//            Transport.send(message);;
+//        } catch (MessagingException ex2) {
+//            ex2.printStackTrace();
+//        }
     }
 
     public static void main(String[] args){
