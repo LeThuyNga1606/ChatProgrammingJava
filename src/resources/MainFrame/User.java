@@ -11,7 +11,7 @@ public class User extends JFrame{
     private JButton ListUserOnline;
     public User(){
         JFrame jr = new JFrame();
-        jr.setTitle("LOGIN - CHAT PROGRAMMING");
+        jr.setTitle("USER - CHAT PROGRAMMING");
         jr.add(mainPanel);
         jr.setSize(400, 300);
         jr.setLocationRelativeTo(null);
