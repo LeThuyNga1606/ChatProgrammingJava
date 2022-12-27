@@ -8,7 +8,7 @@ import java.awt.event.ItemListener;
 import java.sql.*;
 import java.util.Properties;
 
-public class SignIn extends JFrame {
+public class SignIn extends JFrame{
     static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     static final String USER = "root";
     static final String PASS = "";
@@ -36,16 +36,17 @@ public class SignIn extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
                     String username = usernameField.getText();
                     String password = passwordField.getText();
                     Statement stm = conn.createStatement();
-                    String sql = "select * from user where username = '" + username + "' and password = '" + password + "'";
+                    String sql = "select * from user where username = '"+username+"' and password = '"+password+"'";
                     ResultSet rs = stm.executeQuery(sql);
                     if (rs.next()) {
                         dispose();
                         JOptionPane.showConfirmDialog(null, "Login successful");
-                    } else {
+                    }
+                    else{
                         JOptionPane.showConfirmDialog(null, "Username or password wrong!!");
                         usernameField.setText("");
                         passwordField.setText("");
@@ -54,9 +55,12 @@ public class SignIn extends JFrame {
                     rs.close();
                     stm.close();
                     conn.close();
-                } catch (ClassNotFoundException ex) {
+                }catch (ClassNotFoundException ex)
+                {
                     ex.printStackTrace();
-                } catch (SQLException ex) {
+                }
+                catch (SQLException ex)
+                {
                     ex.printStackTrace();
                 }
             }
@@ -112,19 +116,19 @@ public class SignIn extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
                     String username = usernameField.getText();
                     Statement stm = conn.createStatement();
 
-                    final String sql = "select * from user where username = '" + username + "'";
+                    final String sql = "select * from user where username = '"+username+"'";
                     ResultSet rs = stm.executeQuery(sql);
 
                     if (rs.next()) {
                         String emailToSend = rs.getString("email");
-                        int pass = (int) Math.random() * (999999 - 1000);
+                        int pass = (int)Math.random() * ( 999999 - 1000 );
                         String resetPass = Integer.toString(pass);
 
-                        if (e.getStateChange() == 1) {
+                        if (e.getStateChange() == 1){
                             sendMail(resetPass, emailToSend);
                         }
 
@@ -133,7 +137,12 @@ public class SignIn extends JFrame {
                     rs.close();
                     stm.close();
                     conn.close();
-                } catch (ClassNotFoundException | SQLException ex) {
+                }catch (ClassNotFoundException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (SQLException ex)
+                {
                     ex.printStackTrace();
                 }
             }
@@ -142,14 +151,7 @@ public class SignIn extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SignIn login = new SignIn();
-
-        //noinspection deprecation
-        login.show();
-    }
-
-    void sendMail(String resetPass, String emailToSend) {
+    void sendMail(String resetPass, String emailToSend){
         final String fromEmail = "laptrinhjava20clc@gmail.com";
         final String passwordEmail = "chatprogram@java";
         String host = "smtp.gmail.com";
@@ -176,5 +178,10 @@ public class SignIn extends JFrame {
 //        } catch (MessagingException ex2) {
 //            ex2.printStackTrace();
 //        }
+    }
+
+    public static void main(String[] args){
+        SignIn login = new SignIn();
+        login.show();
     }
 }
