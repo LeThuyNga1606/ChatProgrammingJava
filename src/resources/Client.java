@@ -96,12 +96,10 @@ public class Client extends JFrame implements ActionListener {
         new Client();
         try {
             DataInputStream din;
-            try (Socket s = new Socket("127.0.0.1", 15797)) {
-                din = new DataInputStream(s.getInputStream());
-                dout = new DataOutputStream(s.getOutputStream());
-            }
+            Socket s = new Socket("127.0.0.1", 15797);
+            din = new DataInputStream(s.getInputStream());
+            dout = new DataOutputStream(s.getOutputStream());
 
-            //noinspection InfiniteLoopStatement
             while (true) {
                 a1.setLayout(new BorderLayout());
                 String msg = din.readUTF();
