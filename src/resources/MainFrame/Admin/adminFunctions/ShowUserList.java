@@ -61,9 +61,9 @@ public class ShowUserList extends JFrame {
                 String time = rs.getString("time");
 
                 if (status.equals("1")) {
-                    status = "true";
+                    status = "online";
                 } else {
-                    status = "false";
+                    status = "offline";
                 }
 
                 // create a single array of one row's worth of data
