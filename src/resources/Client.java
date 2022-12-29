@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Client extends JFrame implements ActionListener {
-
     static JPanel a1;
     static Box vertical = Box.createVerticalBox();
     static JFrame f = new JFrame();
@@ -50,6 +49,7 @@ public class Client extends JFrame implements ActionListener {
         text = new JTextField();
         text.setBounds(5, 655, 310, 40);
         text.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
+        text.addActionListener(this);
         f.add(text);
 
         JButton send = new JButton("Send");
@@ -96,10 +96,11 @@ public class Client extends JFrame implements ActionListener {
         new Client();
         try {
             DataInputStream din;
-            Socket s = new Socket("127.0.0.1", 15797);
-            din = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
+            Socket socket = new Socket("127.0.0.1", 15797);
+            din = new DataInputStream(socket.getInputStream());
+            dout = new DataOutputStream(socket.getOutputStream());
 
+            //noinspection InfiniteLoopStatement
             while (true) {
                 a1.setLayout(new BorderLayout());
                 String msg = din.readUTF();
@@ -146,3 +147,4 @@ public class Client extends JFrame implements ActionListener {
         }
     }
 }
+
