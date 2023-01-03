@@ -25,7 +25,8 @@ public class Admin extends JFrame {
             new ShowUserList();
         });
         editUser.addActionListener(e -> {
-
+            dispose();
+            new EditUser();
         });
         showLoginHistory.addActionListener(e -> {
 
