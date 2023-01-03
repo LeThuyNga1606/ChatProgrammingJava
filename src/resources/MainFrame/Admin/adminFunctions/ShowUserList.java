@@ -26,11 +26,11 @@ public class ShowUserList extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //set default close
         setVisible(true);
         goBack.addActionListener(e -> {
-            setVisible(false);
+            dispose();
             new Admin();
         });
         refresh.addActionListener(e -> {
-            setVisible(false);
+            dispose();
             new ShowUserList();
         });
     }
@@ -85,7 +85,10 @@ public class ShowUserList extends JFrame {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        this.mainTitle = new JLabel("User list");
+        mainTitle = new JLabel("User list");
+        add(mainTitle);
+
         readDatabase();
+        add(scroll);
     }
 }

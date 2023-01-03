@@ -9,19 +9,19 @@ import java.util.Random;
 public class SignUp extends JFrame {
     static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     static final String USER = "root";
-    static final String PASS = "";
+    static final String PASS = "kendark";
 
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JLabel fullnameLabel;
     private JTextField fullnameField;
-    private JLabel signUpUsernameLabel;
+    private JLabel usernameLabel;
     private JTextField signUpUsername;
     private JLabel passwordLabel1;
     private JLabel passwordLabel2;
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
-    private JButton okButton;
+    private JButton okBtn;
     private JLabel mailLabel;
     private JTextField mailField;
     private JTextField genderField;
@@ -30,15 +30,17 @@ public class SignUp extends JFrame {
     private JLabel addressLabel;
     private JTextField addressField;
     private JLabel genderLabel;
+    private JButton goBackBtn;
 
     public SignUp() {
-        setTitle("REGISTER- CHAT PROGRAMMING"); //set title for registration window
+        setTitle("REGISTER - CHAT PROGRAMMING"); //set title for registration window
         add(mainPanel); //add main panel to frame
         setSize(300, 300); //set size of window
         setLocationRelativeTo(null); //set the location of window relative to the current component c (in this case the component c is 'null' so that we're setting the window is centered on the screen)
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //set default close
+        setVisible(true);
 
-        okButton.addActionListener(e -> {
+        okBtn.addActionListener(e -> {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver"); //declare the jdbc diver
                 Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); //declare the connection of program's database
@@ -91,6 +93,8 @@ public class SignUp extends JFrame {
                     dispose();
                     JOptionPane.showConfirmDialog(null, "Register successful");
                     SignIn login = new SignIn();
+
+                    //noinspection deprecation
                     login.show();
 
                     conn.close();
@@ -99,11 +103,49 @@ public class SignUp extends JFrame {
                 ex.printStackTrace();
             }
         });
-        setVisible(true);
+        goBackBtn.addActionListener(e -> {
+            dispose();
+            new SignIn();
+        });
     }
 
     public static void main(String[] args) {
-        SignUp res = new SignUp();
-        res.show();
+        new SignUp();
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        titleLabel = new JLabel("SIGN UP");
+        add(titleLabel);
+
+        fullnameLabel = new JLabel("FULL NAME");
+        add(fullnameLabel);
+
+        mailLabel = new JLabel("MAIL");
+        add(mailLabel);
+
+        usernameLabel = new JLabel("USERNAME");
+        add(usernameLabel);
+
+        passwordLabel1 = new JLabel("PASSWORD");
+        add(passwordLabel1);
+
+        passwordLabel2 = new JLabel("RE-ENTER PASSWORD");
+        add(passwordLabel2);
+
+        addressLabel = new JLabel("ADDRESS");
+        add(addressLabel);
+
+        dobLabel = new JLabel("DOB");
+        add(dobLabel);
+
+        genderLabel = new JLabel("GENDER");
+        add(genderLabel);
+
+        goBackBtn = new JButton("GO BACK");
+        add(goBackBtn);
+
+        okBtn = new JButton("OK");
+        add(okBtn);
     }
 }

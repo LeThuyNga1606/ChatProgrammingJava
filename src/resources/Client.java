@@ -8,18 +8,74 @@ import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Client extends JFrame implements ActionListener {
+    static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
+    static final String USER = "root";
+    static final String PASS = "kendark";
     static JPanel a1;
     static Box vertical = Box.createVerticalBox();
     static JFrame f = new JFrame();
     static DataOutputStream dout;
+    static DataInputStream din;
     JTextField text;
 
-    public Client() {
+    public Client(String username) throws SQLException, ClassNotFoundException {
+        f.setLayout(null);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.setSize(600, 500);
+        this.setTitle("Chat Program");
 
+        JPanel p1 = new JPanel();
+        p1.setBackground(new Color(7, 94, 84));
+        p1.setBounds(0, 0, 450, 70);
+        p1.setLayout(null);
+        f.add(p1);
+
+        JLabel name = new JLabel(getFullname(username));
+        name.setBounds(110, 15, 100, 18);
+        name.setForeground(Color.WHITE);
+        name.setFont(new Font("SAN_SERIF", Font.BOLD, 18));
+        p1.add(name);
+
+        JLabel status = new JLabel("Active Now");
+        status.setBounds(110, 35, 100, 18);
+        status.setForeground(Color.WHITE);
+        status.setFont(new Font("SAN_SERIF", Font.BOLD, 14));
+        p1.add(status);
+
+        a1 = new JPanel();
+        a1.setBounds(5, 75, 440, 570);
+        f.add(a1);
+
+        text = new JTextField();
+        text.setBounds(5, 655, 310, 40);
+        text.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
+        text.addActionListener(this);
+        f.add(text);
+
+        JButton send = new JButton("Send");
+        send.setBounds(320, 655, 123, 40);
+        send.setBackground(new Color(7, 94, 84));
+        send.setForeground(Color.WHITE);
+        send.addActionListener(this);
+        send.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
+        f.add(send);
+
+        f.setSize(450, 735);
+        f.setLocation(800, 50);
+        //f.setUndecorated(true);
+        f.getContentPane().setBackground(Color.WHITE);
+
+        //f.pack();
+        f.setVisible(true);
+//        starter();
+    }
+
+    public Client() {
         f.setLayout(null);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setSize(500, 500);
@@ -30,7 +86,7 @@ public class Client extends JFrame implements ActionListener {
         p1.setLayout(null);
         f.add(p1);
 
-        JLabel name = new JLabel("NGA");
+        JLabel name = new JLabel("User");
         name.setBounds(110, 15, 100, 18);
         name.setForeground(Color.WHITE);
         name.setFont(new Font("SAN_SERIF", Font.BOLD, 18));
@@ -95,13 +151,13 @@ public class Client extends JFrame implements ActionListener {
     public static void main(String[] args) {
         new Client();
         try {
-            DataInputStream din;
             Socket socket = new Socket("127.0.0.1", 15797);
             din = new DataInputStream(socket.getInputStream());
             dout = new DataOutputStream(socket.getOutputStream());
 
             //noinspection InfiniteLoopStatement
             while (true) {
+                System.out.println(1);
                 a1.setLayout(new BorderLayout());
                 String msg = din.readUTF();
                 JPanel panel = formatLabel(msg);
@@ -120,6 +176,24 @@ public class Client extends JFrame implements ActionListener {
         }
     }
 
+    static String getFullname(String username) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        String sql = "SELECT fullname FROM user WHERE username = '" + username + "';";
+        String fullnanme = null;
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                fullnanme = rs.getString("fullname");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return fullnanme;
+    }
+
+    //listeners for entering
     public void actionPerformed(ActionEvent ae) {
         try {
             String out = text.getText();
