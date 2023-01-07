@@ -1,48 +1,65 @@
 package resources.MainFrame.Admin;
 
+import resources.MainFrame.Admin.adminFunctions.EditUser.EditUser;
 import resources.MainFrame.Admin.adminFunctions.ShowUserList;
+import resources.MainFrame.Admin.adminFunctions.ShowUserLogInList;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Admin extends JFrame {
+public class Admin extends JFrame{
     private JPanel mainPanel;
-    private JButton showUserList;
-    private JButton showFriendList;
-    private JButton showLoginHistory;
+    private JButton showListUser;
+    private JButton showListFriend;
+    private JButton showHistoryLogin;
     private JButton editUser;
-    private JButton showGroupList;
+    private JButton showListGroup;
 
-    public Admin() {
+    public Admin(){
         setTitle("ADMIN - Chat programming");
+
         add(mainPanel);
         setSize(600, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-
-        showUserList.addActionListener(e -> {
-            dispose();
-            new ShowUserList();
+        showListUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ShowUserList();
+            }
         });
-        editUser.addActionListener(e -> {
-            dispose();
-            new EditUser();
+        editUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new EditUser();
+            }
         });
-        showLoginHistory.addActionListener(e -> {
-
+        showHistoryLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ShowUserLogInList();
+            }
         });
-        showFriendList.addActionListener(e -> {
-
+        showListFriend.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
         });
-        showGroupList.addActionListener(e -> {
+        showListGroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+            }
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Admin ad = new Admin();
-
-        //noinspection deprecation
         ad.show();
     }
 }
