@@ -71,7 +71,7 @@ public class AddNewUser extends JFrame{
                         JOptionPane.showMessageDialog(null, "Already Exists");
                     } else {
                         // Set up the SQL statement to execute
-                        String sql = "insert into user(id, fullname, username, password, address, dob, gender, email)values (?,?,?,?,?,?,?,?)";
+                        String sql = "insert into user(id, fullname, username, password, address, dob, gender, email, stateAcc)values (?,?,?,?,?,?,?,?,?)";
 
                         PreparedStatement stm = conn.prepareStatement(sql);
                         stm.setString(1, id);
@@ -82,6 +82,7 @@ public class AddNewUser extends JFrame{
                         stm.setString(6, DOB);
                         stm.setString(7, gen);
                         stm.setString(8, email);
+                        stm.setString(9, "activated");
 
                         stm.executeUpdate(); //execute the statement
                         dispose();
