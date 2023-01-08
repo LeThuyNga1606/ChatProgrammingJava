@@ -43,7 +43,7 @@ public class ShowUserList1 extends JFrame {
             Statement stmt = conn.createStatement();
 
             // get data from table 'status'
-            ResultSet rs = stmt.executeQuery("select * from user_online"); // get status' data
+            ResultSet rs = stmt.executeQuery("select distinct username, is_online from user_online"); // get status' data
 
             // create a table model with the appropriate column headers and with 0 rows (to start with)
             String[] columnNames = {"Usernname"};
