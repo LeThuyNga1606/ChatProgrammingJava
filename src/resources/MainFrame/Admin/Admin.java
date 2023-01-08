@@ -33,7 +33,8 @@ public class Admin extends JFrame {
         });
 
         showLoginHistory.addActionListener(e -> {
-
+            dispose();
+            new ShowUserLogInList();
         });
 
         showFriendList.addActionListener(e -> {
