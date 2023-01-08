@@ -10,7 +10,7 @@ import java.sql.*;
 public class UpdateUserInfo extends JFrame {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     private static final String USER_NAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "kendark";
     private JButton goBackButton;
     private JButton updateButton;
     private JTextField fullnameField;

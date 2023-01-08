@@ -7,10 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class UpdateUserPassword extends JFrame{
+public class UpdateUserPassword extends JFrame {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     private static final String USER_NAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "kendark";
     private JPanel mainPanel;
     private JButton goBackButton;
     private JButton updateButton;
@@ -54,13 +54,13 @@ public class UpdateUserPassword extends JFrame{
                     }
 
                     // Checking if the username is in the database
-                    String check_user = "select id, username from user where id ='" + id + "' and username='"+username+"'";
+                    String check_user = "select id, username from user where id ='" + id + "' and username='" + username + "'";
                     Statement st = conn.createStatement();
                     ResultSet rs = st.executeQuery(check_user);
 
                     if (rs.next()) {
                         // Set up the SQL statement to execute
-                        String sql = "update user set password = '"+newPass+"' where id = '"+id+"' and username= '"+username+"'";
+                        String sql = "update user set password = '" + newPass + "' where id = '" + id + "' and username= '" + username + "'";
                         Statement stm = conn.createStatement();
                         stm.executeUpdate(sql);
                         JOptionPane.showConfirmDialog(null, "Update successful");
@@ -78,6 +78,7 @@ public class UpdateUserPassword extends JFrame{
             }
         });
     }
+
     public static void main(String[] args) {
         new UpdateUserPassword();
     }

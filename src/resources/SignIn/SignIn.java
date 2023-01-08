@@ -77,80 +77,11 @@ public class SignIn extends JFrame {
             dispose();
             new ForgotPassword();
         });
-
-        /*remake_password.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
-                    String username = usernameField.getText();
-                    Statement stm = conn.createStatement();
-
-                    final String sql = "select * from user where username = '"+username+"'";
-                    ResultSet rs = stm.executeQuery(sql);
-
-                    while (rs.next()) {
-                        String emailToSend = rs.getString("email");
-                        int pass = (int)Math.random() * ( 999999 - 1000 );
-                        String resetPass = Integer.toString(pass);
-
-                        sendMail(resetPass, emailToSend);
-
-                        JOptionPane.showConfirmDialog(null, "Please check your mailbox!!");
-                    }
-
-                    rs.close();
-                    stm.close();
-                    conn.close();
-                }catch (ClassNotFoundException ex)
-                {
-                    ex.printStackTrace();
-                }
-                catch (SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });*/
-
-        /*remake_password.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                    String username = usernameField.getText();
-                    Statement stm = conn.createStatement();
-
-                    final String sql = "select * from user where username = '" + username + "'";
-                    ResultSet rs = stm.executeQuery(sql);
-
-                    if (rs.next()) {
-                        String emailToSend = rs.getString("email");
-                        int pass = (int) (Math.random() * (999999 - 1000));
-                        String resetPass = Integer.toString(pass);
-
-                        if (e.getStateChange() == 1) {
-                            sendMail(resetPass, emailToSend);
-                        }
-
-                        JOptionPane.showConfirmDialog(null, "Please check your mailbox!!");
-                    }
-                    rs.close();
-                    stm.close();
-                    conn.close();
-                } catch (ClassNotFoundException | SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });*/
     }
 
     public static void main(String[] args) {
         new SignIn();
     }
-
 
     void sendMail(String resetPass, String emailToSend) {
         final String fromEmail = "laptrinhjava20clc@gmail.com";

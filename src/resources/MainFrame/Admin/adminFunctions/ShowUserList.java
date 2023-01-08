@@ -54,7 +54,7 @@ public class ShowUserList extends JFrame {
             ResultSet rs = stmt.executeQuery("select * from user"); // get status' data
 
             // create a table model with the appropriate column headers and with 0 rows (to start with)
-            String[] columnNames = {"User ID", "Fullname", "Username", "Address", "DOB", "Gender","Email"/*, "State account"*/};
+            String[] columnNames = {"User ID", "Fullname", "Username", "Address", "DOB", "Gender","Email", "State account"};
             DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
             while (rs.next()) {
@@ -64,11 +64,11 @@ public class ShowUserList extends JFrame {
                 String add = rs.getString("address");
                 String dob = rs.getString("dob");
                 String gen = rs.getString("gender");
-                String mail = rs.getString("mail");
-//                String state = rs.getString("stateAcc");
+                String mail = rs.getString("email");
+                String state = rs.getString("stateAcc");
 
                 // create a single array of one row's worth of data
-                String[] data = {id, fullname, name, add, dob, gen, mail/*, state*/};
+                String[] data = {id, fullname, name, add, dob, gen, mail, state};
 
                 // and add this row of data into the table model
                 tableModel.addRow(data);
