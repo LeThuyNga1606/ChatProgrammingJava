@@ -1,179 +1,124 @@
 package resources.SignIn;
 
-import resources.Client;
+import resources.CheckExit;
+import resources.MainFrame.User.User;
 import resources.SignIn.partials.ForgotPassword;
 import resources.SignUp.SignUp;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Properties;
+import java.time.LocalTime;
 
-
-public class SignIn extends JFrame {
+public class SignIn extends JFrame{
     static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     static final String USER = "root";
-    static final String PASS = "kendark";
-    public String username;
+    static final String PASS = "";
     private JLabel signinLabel;
     private JLabel usernameLabel;
     private JTextField usernameField;
     private JLabel passwordLabel;
     private JPasswordField passwordField;
-    private JButton signInBtn;
-    private JButton signUpBtn;
+    private JButton signInButton;
+    private JPanel panelMain;
+    private JButton signUpButton;
     private JPanel mainPanel;
-    private JButton forgotPassBtn;
-    private JCheckBox remake_password;
-    private String password;
-
+    private JButton forgotPasswordButton;
 
     public SignIn() {
-        setTitle("LOGIN - CHAT PROGRAMMING"); //set title for registration window
-        add(mainPanel); //add main panel to frame
-        setSize(400, 300); //set size of window
-        setLocationRelativeTo(null); //set the location of window relative to the current component c (in this case the component c is 'null' so that we're setting the window is centered on the screen)
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //set default close
-        setVisible(true);
+        JFrame jr = new JFrame();
+        jr.setTitle("LOGIN - CHAT PROGRAMMING");
+        jr.add(mainPanel);
+        jr.setSize(400, 300);
+        jr.setLocationRelativeTo(null);
+        jr.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-
-        signInBtn.addActionListener(e -> {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                username = usernameField.getText();
-                password = String.valueOf(passwordField.getPassword());
-                Statement stm = conn.createStatement();
-                String sql = "select * from user where username = '" + username + "' and password = '" + password + "'";
-                ResultSet rs = stm.executeQuery(sql);
-                if (rs.next()) {
-                    dispose();
-                    JOptionPane.showConfirmDialog(null, "Login successful");
-
-                    rs.close();
-                    stm.close();
-                    conn.close();
-
-                    dispose();
-                    new Client(username);
-                } else {
-                    JOptionPane.showConfirmDialog(null, "Username or password wrong!!");
-                    usernameField.setText("");
-                    passwordField.setText("");
-                }
-
-                rs.close();
-                stm.close();
-                conn.close();
-            } catch (ClassNotFoundException | SQLException ex) {
-                ex.printStackTrace();
-            }
-        });
-
-        signUpBtn.addActionListener(e -> {
-            dispose();
-            new SignUp();
-        });
-
-        forgotPassBtn.addActionListener(e -> {
-            dispose();
-            new ForgotPassword();
-        });
-
-        /*remake_password.addActionListener(new ActionListener() {
+        signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
-                    String username = usernameField.getText();
-                    Statement stm = conn.createStatement();
-
-                    final String sql = "select * from user where username = '"+username+"'";
-                    ResultSet rs = stm.executeQuery(sql);
-
-                    while (rs.next()) {
-                        String emailToSend = rs.getString("email");
-                        int pass = (int)Math.random() * ( 999999 - 1000 );
-                        String resetPass = Integer.toString(pass);
-
-                        sendMail(resetPass, emailToSend);
-
-                        JOptionPane.showConfirmDialog(null, "Please check your mailbox!!");
-                    }
-
-                    rs.close();
-                    stm.close();
-                    conn.close();
-                }catch (ClassNotFoundException ex)
-                {
-                    ex.printStackTrace();
-                }
-                catch (SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });*/
-
-        /*remake_password.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
                     Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                     String username = usernameField.getText();
+                    String password = passwordField.getText();
+                    String time = LocalTime.now().toString();
                     Statement stm = conn.createStatement();
-
-                    final String sql = "select * from user where username = '" + username + "'";
+                    String sql = "select * from user where username = '" + username + "' and password = '" + password + "'";
                     ResultSet rs = stm.executeQuery(sql);
-
                     if (rs.next()) {
-                        String emailToSend = rs.getString("email");
-                        int pass = (int) (Math.random() * (999999 - 1000));
-                        String resetPass = Integer.toString(pass);
+                        if (rs.getString("stateAcc").equals("activated")) {
+                            JOptionPane.showConfirmDialog(null, "Login successful");
+                            String id = rs.getString("id");
+                            updateOnline(id, username, time);
 
-                        if (e.getStateChange() == 1) {
-                            sendMail(resetPass, emailToSend);
+                            dispose();
+                            User user = new User(username);
+                            user.show();
+                        }else{
+                            JOptionPane.showConfirmDialog(null, "This account has been locked by the administrator");
                         }
-
-                        JOptionPane.showConfirmDialog(null, "Please check your mailbox!!");
+                    } else {
+                        JOptionPane.showConfirmDialog(null, "Username or password wrong!!");
+                        usernameField.setText("");
+                        passwordField.setText("");
                     }
+
                     rs.close();
                     stm.close();
                     conn.close();
-                } catch (ClassNotFoundException | SQLException ex) {
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }
-        });*/
+        });
+
+        signUpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                SignUp res = new SignUp();
+                res.show();
+            }
+        });
+
+        forgotPasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ForgotPassword res = new ForgotPassword();
+                res.show();
+            }
+        });
+
+        CheckExit exit = new CheckExit(jr, usernameField.getText());
+        jr.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new SignIn();
+    void updateOnline(String id,String name, String time1){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
+            final String sql = "insert into user_online(iduser, username, is_online, time) values (?,?,?,?)";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, id);
+            stm.setString(2, name);
+            stm.setString(3, "1");
+            stm.setString(4, time1);
+
+            stm.executeUpdate();
+            con.close();
+        }catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
-
-    void sendMail(String resetPass, String emailToSend) {
-        final String fromEmail = "laptrinhjava20clc@gmail.com";
-        final String passwordEmail = "chatprogram@java";
-        String host = "smtp.gmail.com";
-
-        //noinspection MismatchedQueryAndUpdateOfCollection
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", host);
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        signinLabel = new JLabel("LOG IN");
-        add(signinLabel);
-
-        usernameLabel = new JLabel("USERNAME");
-        add(usernameLabel);
-
-        passwordLabel = new JLabel("PASSWORD");
-        add(passwordLabel);
+    public static void main(String[] args){
+        SignIn login = new SignIn();
+        login.show();
     }
 }
