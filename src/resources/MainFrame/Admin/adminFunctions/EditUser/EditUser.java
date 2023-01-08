@@ -1,12 +1,11 @@
 package resources.MainFrame.Admin.adminFunctions.EditUser;
 
 import resources.MainFrame.Admin.Admin;
+import resources.MainFrame.Admin.adminFunctions.EditUser.EditUserFunctions.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class EditUser extends JFrame{
+public class EditUser extends JFrame {
     private JButton addNewUserButton;
     private JButton upPassButton;
     private JButton upInforButton;
@@ -14,58 +13,47 @@ public class EditUser extends JFrame{
     private JButton deleteUserButton;
     private JPanel mainPanel;
     private JButton blockUserButton;
+    private JLabel captionLabel;
 
-    public EditUser(){
-        setTitle("Edit user - Chat programming"); //set title for registration window
-        add(mainPanel); //add main panel to frame
-        setSize(600, 300); //set size of window
-        setLocationRelativeTo(null); //set the location of window relative to the current component c (in this case the component c is 'null' so that we're setting the window is centered on the screen)
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //set default close
+    public EditUser() {
+        setTitle("Edit user - Chat programming"); // set title for registration window
+        add(mainPanel); // add main panel to frame
+        setSize(630, 130); // set size of window
+        setLocationRelativeTo(null); // set the window display position to the center of the screen
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // set default close
         setVisible(true);
 
-        addNewUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new AddNewUser();
-            }
+        addNewUserButton.addActionListener(e -> {
+            dispose();
+            new AddNewUser();
         });
-        upInforButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new UpdateInforUser();
-            }
+
+        upInforButton.addActionListener(e -> {
+            dispose();
+            new UpdateUserInfo();
         });
-        deleteUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new DeleteUser();
-            }
+
+        deleteUserButton.addActionListener(e -> {
+            dispose();
+            new DeleteUser();
         });
-        upPassButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new UpdatePassUser();
-            }
+
+        upPassButton.addActionListener(e -> {
+            dispose();
+            new UpdateUserPassword();
         });
-        goBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Admin();
-            }
+
+        goBackButton.addActionListener(e -> {
+            dispose();
+            new Admin();
         });
-        blockUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new blockUser();
-            }
+
+        blockUserButton.addActionListener(e -> {
+            dispose();
+            new LockUser();
         });
     }
+
     public static void main(String[] args) {
         new EditUser();
     }

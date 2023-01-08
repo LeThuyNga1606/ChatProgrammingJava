@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -67,12 +68,9 @@ public class Client extends JFrame implements ActionListener {
 
         f.setSize(450, 735);
         f.setLocation(800, 50);
-        //f.setUndecorated(true);
         f.getContentPane().setBackground(Color.WHITE);
 
-        //f.pack();
         f.setVisible(true);
-//        starter();
     }
 
     public Client() {
@@ -151,6 +149,7 @@ public class Client extends JFrame implements ActionListener {
     public static void main(String[] args) {
         new Client();
         try {
+            //noinspection resource
             Socket socket = new Socket("127.0.0.1", 15797);
             din = new DataInputStream(socket.getInputStream());
             dout = new DataOutputStream(socket.getOutputStream());
@@ -191,6 +190,30 @@ public class Client extends JFrame implements ActionListener {
         }
 
         return fullnanme;
+    }
+
+    public void temp() throws IOException {
+        //noinspection resource
+        Socket socket = new Socket("127.0.0.1", 15797);
+        din = new DataInputStream(socket.getInputStream());
+        dout = new DataOutputStream(socket.getOutputStream());
+
+        //noinspection InfiniteLoopStatement
+        while (true) {
+            System.out.println(1);
+            a1.setLayout(new BorderLayout());
+            String msg = din.readUTF();
+            JPanel panel = formatLabel(msg);
+
+            JPanel left = new JPanel(new BorderLayout());
+            left.add(panel, BorderLayout.LINE_START);
+            vertical.add(left);
+
+            vertical.add(Box.createVerticalStrut(15));
+            a1.add(vertical, BorderLayout.PAGE_START);
+
+            f.validate();
+        }
     }
 
     //listeners for entering

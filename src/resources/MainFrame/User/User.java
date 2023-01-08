@@ -1,9 +1,8 @@
 package resources.MainFrame.User;
+
 import resources.SignIn.partials.ChangePassword;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class User extends JFrame{
     private JPanel mainPanel;
@@ -22,44 +21,32 @@ public class User extends JFrame{
         jr.setLocationRelativeTo(null);
         jr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jr.setVisible(true);
-        ListFriend.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-        ListChat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        ListFriend.addActionListener(e -> {
 
-            }
         });
-        ListGroup.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
+        ListChat.addActionListener(e -> {
+
         });
-        ListUserOnline.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new ShowUserList1(username);
-            }
+
+        ListGroup.addActionListener(e -> {
+
         });
-        changePass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new ChangePassword(username);
-            }
+
+        ListUserOnline.addActionListener(e -> {
+            dispose();
+            new ShowUserList1(username);
         });
-        EditFriend.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new EditFriend(username);
-            }
+
+        changePass.addActionListener(e -> {
+            dispose();
+            new ChangePassword(username);
+        });
+
+        EditFriend.addActionListener(e -> {
+            dispose();
+            new EditFriend(username);
         });
     }
 }

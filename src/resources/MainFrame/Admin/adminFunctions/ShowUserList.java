@@ -9,7 +9,7 @@ import java.sql.*;
 public class ShowUserList extends JFrame {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/chat_program";
     private static final String USER_NAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "kendark";
     private JPanel mainPanel;
     private JButton refresh;
     private JLabel mainTitle;
@@ -21,14 +21,16 @@ public class ShowUserList extends JFrame {
         setTitle("User list - Chat programming"); //set title for registration window
         add(mainPanel); //add main panel to frame
 
-        setSize(800, 600); //set size of window
+        setSize(1000, 400); //set size of window
         setLocationRelativeTo(null); //set the location of window relative to the current component c (in this case the component c is 'null' so that we're setting the window is centered on the screen)
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //set default close
         setVisible(true);
+
         goBack.addActionListener(e -> {
             dispose();
             new Admin();
         });
+
         refresh.addActionListener(e -> {
             dispose();
             new ShowUserList();
@@ -52,7 +54,7 @@ public class ShowUserList extends JFrame {
             ResultSet rs = stmt.executeQuery("select * from user"); // get status' data
 
             // create a table model with the appropriate column headers and with 0 rows (to start with)
-            String[] columnNames = {"User ID", "Fullname", "Username", "Address", "DOB", "Gender","Email", "State account"};
+            String[] columnNames = {"User ID", "Fullname", "Username", "Address", "DOB", "Gender","Email"/*, "State account"*/};
             DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
             while (rs.next()) {
@@ -62,11 +64,11 @@ public class ShowUserList extends JFrame {
                 String add = rs.getString("address");
                 String dob = rs.getString("dob");
                 String gen = rs.getString("gender");
-                String mail = rs.getString("email");
-                String state = rs.getString("stateAcc");
+                String mail = rs.getString("mail");
+//                String state = rs.getString("stateAcc");
 
                 // create a single array of one row's worth of data
-                String[] data = {id, fullname, name, add, dob, gen, mail, state};
+                String[] data = {id, fullname, name, add, dob, gen, mail/*, state*/};
 
                 // and add this row of data into the table model
                 tableModel.addRow(data);

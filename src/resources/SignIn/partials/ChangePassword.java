@@ -1,8 +1,6 @@
 package resources.SignIn.partials;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,39 +26,31 @@ public class ChangePassword extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setVisible(true);
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String newPass = String.valueOf(newPasswordField.getPassword());
-                String re_newPass = String.valueOf(reEnterNewPasswordField.getPassword());
-                String name = username;
+        okButton.addActionListener(e -> {
+            String newPass = String.valueOf(newPasswordField.getPassword());
+            String re_newPass = String.valueOf(reEnterNewPasswordField.getPassword());
 
-                if (newPass.isEmpty() || re_newPass.isEmpty())
-                    JOptionPane.showMessageDialog(null, "Please enter all fields");
+            if (newPass.isEmpty() || re_newPass.isEmpty())
+                JOptionPane.showMessageDialog(null, "Please enter all fields");
 
-                if(!newPass.equals(re_newPass))
-                    JOptionPane.showConfirmDialog(null, "Confirm password does not match");
+            if(!newPass.equals(re_newPass))
+                JOptionPane.showConfirmDialog(null, "Confirm password does not match");
 
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);
 
-                    final String sql = "update user set password = '"+newPass+"' where username = '"+name+"'";
-                    Statement stm = conn.createStatement();
-                    stm.executeUpdate(sql);
+                final String sql = "update user set password = '"+newPass+"' where username = '"+ username +"'";
+                Statement stm = conn.createStatement();
+                stm.executeUpdate(sql);
 
-                    dispose();
+                dispose();
 
-                    stm.close();
-                    conn.close();
-                }catch (ClassNotFoundException ex)
-                {
-                    ex.printStackTrace();
-                }
-                catch (SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
+                stm.close();
+                conn.close();
+            }catch (ClassNotFoundException | SQLException ex)
+            {
+                ex.printStackTrace();
             }
         });
     }
